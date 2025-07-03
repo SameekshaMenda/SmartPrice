@@ -15,9 +15,9 @@ Components:
    - Exposes `/search` endpoint
    - Accepts product name or image
    - Coordinates with:
-     a. eBay/Amazon API for product data
-     b. Web scrapers (Flipkart, Meesho)
-     c. Google Vision API (optional image to text)
+      a. eBay/Amazon API for product data
+      b. Web scrapers (Flipkart, Meesho)
+      c. Google Vision API (optional image to text)
 
 3. **Web Scrapers (Puppeteer or Cheerio scripts)**
    - Separate modules/scripts that scrape price, title, rating from Flipkart, Meesho, etc.
