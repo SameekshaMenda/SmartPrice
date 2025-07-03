@@ -3,8 +3,7 @@ const router = express.Router();
 
 // const { getEbayProducts } = require('../services/ebayService');
 const { getMockEbayProducts: getEbayProducts } = require('../services/ebayService');
-
-const { getMockAmazonProducts } = require('../services/amazonService');
+const { getAmazonService } = require('../services/amazonService');
 const { getFlipkartProducts } = require('../services/flipkartService');
 
 router.get('/', async (req, res) => {
@@ -15,7 +14,7 @@ router.get('/', async (req, res) => {
     const [ebay, flipkart, amazon] = await Promise.all([
       getEbayProducts(query),
       getFlipkartProducts(query),
-      getMockAmazonProducts(query)
+      getAmazonService(query)
     ]);
 
     const results = [...ebay, ...flipkart, ...amazon];
