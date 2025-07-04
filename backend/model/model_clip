@@ -1,0 +1,58 @@
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+import torch
+import clip
+from PIL import Image
+import os
+
+app = Flask(__name__)
+CORS(app)
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+model, preprocess = clip.load("ViT-B/32", device=device)
+
+# Sample product names (you can expand this or load from file/db)
+product_names = [
+    "iPhone 13 Red 128GB",
+    "Samsung Galaxy S22",
+    "Sony Wireless Mouse",
+    "MacBook Air M2",
+    "HP Pavilion Laptop",
+    "Realme Narzo 60",
+    "OnePlus 11R",
+    "Redmi Note 13",
+    "iPad 10th Gen",
+    "JBL Bluetooth Speaker"
+]
+
+text_tokens = clip.tokenize(product_names).to(device)
+text_features = model.encode_text(text_tokens)
+
+@app.route("/predict", methods=["POST"])
+def predict():
+    if 'image' not in request.files:
+        return jsonify({ "error": "No image uploaded" }), 400
+
+    image = Image.open(request.files['image']).convert("RGB")
+    image_input = preprocess(image).unsqueeze(0).to(device)
+
+    with torch.no_grad():
+        image_features = model.encode_image(image_input)
+        similarity = (image_features @ text_features.T).squeeze(0)
+        probs = similarity.softmax(dim=0)
+    
+    best_idx = probs.argmax().item()
+    best_label = product_names[best_idx]
+    confidence = probs[best_idx].item()
+
+    return jsonify({
+        "prediction": best_label,
+        "confidence": round(confidence, 3),
+        "alternatives": [
+            { "name": product_names[i], "score": round(p.item(), 3) }
+            for i, p in sorted(enumerate(probs), key=lambda x: x[1], reverse=True)[:5]
+        ]
+    })
+
+if __name__ == "__main__":
+    app.run(debug=True, port=5001)
