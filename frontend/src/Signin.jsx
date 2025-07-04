@@ -2,7 +2,7 @@ function Signin() {
   return (
     <div className="h-screen w-screen flex justify-center items-center bg-gradient-to-br from-primary to-secondary">
       <div className="bg-white shadow-lg rounded-xl w-[400px] p-8">
-        <h2 className="text-3xl font-bold text-primary mb-6 text-center">Sign In to SmartPrice</h2>
+        <h2 className="text-3xl font-bold text-primary mb-6 text-center">Sign In</h2>
         <form className="flex flex-col gap-4">
           <input
             type="email"
