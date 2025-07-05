@@ -17,14 +17,14 @@ export default function Analyze() {
 
         <div className="flex gap-6">
           <button
-            onClick={() => navigate("/analyze/image")}
+            onClick={() => navigate("/analyze/analyzeimage")}
             className="bg-[#FFB433] text-black px-6 py-3 rounded-full font-semibold hover:bg-yellow-400 transition"
           >
             Upload Image
           </button>
 
           <button
-            onClick={() => navigate("/analyze/text")}
+            onClick={() => navigate("/analyze/analyzetext")}
             className="bg-[#B4EBE6] text-black px-6 py-3 rounded-full font-semibold hover:bg-[#80CBC4] transition"
           >
             Enter Text
