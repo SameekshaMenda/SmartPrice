@@ -5,27 +5,27 @@ export default function Analyze() {
   const navigate = useNavigate();
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden">
-      {/* Background */}
+    <div className="relative w-screen h-screen overflow-hidden bg-white">
+      {/* Background Squares */}
       <div className="absolute inset-0 z-0">
-        <Squares direction="diagonal" speed={0.5} />
+        <Squares direction="diagonal" speed={0.5} color="#17153B" />
       </div>
 
-      {/* Foreground */}
-      <div className="relative z-10 flex flex-col items-center justify-center h-full text-gray-800">
-        <h1 className="text-4xl font-bold mb-8 text-[#80CBC4]">Analyze Product</h1>
+      {/* Foreground Content */}
+      <div className="relative z-10 flex flex-col items-center justify-center h-full text-[#17153B]">
+        <h1 className="text-4xl font-bold mb-8 text-[#17153B]">Analyze Product</h1>
 
         <div className="flex gap-6">
           <button
             onClick={() => navigate("/analyze/analyzeimage")}
-            className="bg-[#FFB433] text-black px-6 py-3 rounded-full font-semibold hover:bg-yellow-400 transition"
+            className="bg-[#17153B] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#2E236C] transition"
           >
             Upload Image
           </button>
 
           <button
             onClick={() => navigate("/analyze/analyzetext")}
-            className="bg-[#B4EBE6] text-black px-6 py-3 rounded-full font-semibold hover:bg-[#80CBC4] transition"
+            className="bg-[#17153B] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#2E236C] transition"
           >
             Enter Text
           </button>

@@ -3,7 +3,7 @@ import { useRef, useEffect } from "react";
 const Squares = ({
   direction = "right",
   speed = 1,
-  borderColor = "#80CBC4", // light teal color
+  borderColor = "#C8ACD6", // light teal color
   squareSize = 40,
   hoverFillColor = "#B4EBE6", // light blue on hover
 }) => {
