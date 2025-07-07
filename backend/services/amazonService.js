@@ -2,7 +2,7 @@ const axios = require('axios');
 
 async function getAmazonService(query) {
   const url = 'https://real-time-amazon-data.p.rapidapi.com/search';
-  
+
   const headers = {
     'X-RapidAPI-Key': '5f57ac184emshac396b432d682fap1c8b54jsn296335dbef48', // Store this in `.env` in production
     'X-RapidAPI-Host': 'real-time-amazon-data.p.rapidapi.com'
@@ -18,13 +18,19 @@ async function getAmazonService(query) {
     const response = await axios.get(url, { headers, params });
     const products = response.data?.data?.products || [];
 
-    return products.map(product => ({
+    const formattedProducts = products.map(product => ({
       title: product.product_title || 'No title',
       image: product.product_image || 'No image',
       platform: 'Amazon',
       price: product.product_price || 'No price',
       url: product.product_url || 'No URL'
     }));
+
+    // ✅ Print to terminal
+    console.log('🛒 Scraped Amazon Products:\n', formattedProducts);
+
+    return formattedProducts;
+
   } catch (error) {
     console.error('Error fetching from Amazon API:', error.message);
     return [];

@@ -1,41 +1,57 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
+const puppeteer = require('puppeteer');
 
-async function getFlipkartProducts(query) {
-  const searchURL = `https://www.flipkart.com/search?q=${encodeURIComponent(query)}`;
+async function getFlipkartService(query) {
+  const url = `https://www.flipkart.com/search?q=${encodeURIComponent(query)}`;
 
   try {
-    const { data } = await axios.get(searchURL, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0'
-      }
+    const browser = await puppeteer.launch({
+      headless: false,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      defaultViewport: null,
     });
 
-    const $ = cheerio.load(data);
-    const items = [];
+    const page = await browser.newPage();
+    await page.setUserAgent(
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/114 Safari/537.36'
+    );
 
-    $('._1AtVbE').each((i, el) => {
-      const title = $(el).find('._4rR01T, .s1Q9rs').text();
-      const price = $(el).find('._30jeq3').text();
-      const url = 'https://www.flipkart.com' + $(el).find('a').attr('href');
-      const image = $(el).find('img').attr('src');
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
 
-      if (title && price && url) {
-        items.push({
-          title,
-          price,
-          platform: 'Flipkart',
-          url,
-          image: image || ''
-        });
-      }
+    // Wait for products to load
+    await page.waitForSelector('a.CGtC98', { timeout: 10000 });
+
+    const products = await page.evaluate(() => {
+      const items = document.querySelectorAll('a.CGtC98');
+      const results = [];
+
+      items.forEach(card => {
+        const title = card.querySelector('.KzDlHZ')?.innerText;
+        const price = card.querySelector('.Nx9bqj._4b5DiR')?.innerText;
+        const image = card.querySelector('img.DByuf4')?.src;
+        const relativeUrl = card.getAttribute('href');
+
+        if (title && price && image && relativeUrl) {
+          results.push({
+            title,
+            price,
+            image,
+            platform: 'Flipkart',
+            url: 'https://www.flipkart.com' + relativeUrl
+          });
+        }
+      });
+
+      return results;
     });
 
-    return items.slice(0, 5); // Limit to 5 results
-  } catch (err) {
-    console.error('❌ Flipkart scrape failed:', err.message);
+    console.log('✅ Scraped Products:', products);
+    await browser.close();
+    return products;
+
+  } catch (error) {
+    console.error('🚨 Flipkart scraping failed:', error);
     return [];
   }
 }
 
-module.exports = { getFlipkartProducts };
+module.exports = { getFlipkartService };
