@@ -1,40 +1,53 @@
-function Signin() {
-  return (
-    <div className="flex h-screen">
-      {/* Left Side - Signin Form with Background */}
-      <div className="w-1/2 bg-gradient-to-br from-primary to-secondary flex justify-center items-center">
-        <div className="w-[350px]">
-          <h2 className="text-4xl font-bold text-cream mb-8 text-center">Sign In</h2>
-          <form className="flex flex-col gap-5">
-            <input
-              type="email"
-              placeholder="Email"
-              className="p-3 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              className="p-3 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-            <button
-              type="submit"
-              className="bg-accent text-white py-3 rounded-lg font-semibold hover:bg-yellow-400 transition duration-300"
-            >
-              Sign In
-            </button>
-          </form>
-          <p className="mt-4 text-center text-sm text-cream">
-            Don’t have an account? <span className="underline cursor-pointer">Register</span>
-          </p>
-        </div>
-      </div>
+import { Link, useNavigate } from "react-router-dom";
 
-      {/* Right Side - White Background */}
-      <div className="w-1/2 bg-white flex justify-center items-center">
-        <h1 className="text-5xl font-bold text-primary">SmartPrice</h1>
+export default function Signin() {
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // TODO: Add authentication logic
+    navigate("/welcome");
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-[#F3EFF9] to-white relative overflow-hidden px-4">
+      {/* Decorative Borders */}
+      <div className="absolute top-8 right-8 w-20 h-20 bg-[#C8ACD6] opacity-20 rounded-lg rotate-12"></div>
+      <div className="absolute bottom-8 left-8 w-24 h-24 bg-[#17153B] opacity-10 rotate-45"></div>
+
+      {/* Sign-in Form */}
+      <div className="bg-white shadow-2xl rounded-2xl w-full max-w-md p-8 z-10">
+        <h2 className="text-3xl font-bold text-[#17153B] mb-6 text-center">Welcome Back</h2>
+
+        <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
+          <input
+            type="email"
+            placeholder="Email"
+            required
+            className="p-3 rounded-lg border border-[#C8ACD6] focus:outline-none focus:ring-2 focus:ring-[#C8ACD6]"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            required
+            className="p-3 rounded-lg border border-[#C8ACD6] focus:outline-none focus:ring-2 focus:ring-[#C8ACD6]"
+          />
+
+          <button
+            type="submit"
+            className="bg-[#17153B] text-[#C8ACD6] py-3 rounded-lg font-semibold hover:bg-[#B19CC8] hover:text-[#17153B] transition duration-300"
+          >
+            Sign In
+          </button>
+        </form>
+
+        <p className="mt-5 text-center text-sm text-[#433D8B]">
+          New here?{" "}
+          <Link to="/signup" className="text-[#C8ACD6] underline hover:text-[#B19CC8] transition">
+            Create an Account
+          </Link>
+        </p>
       </div>
     </div>
   );
 }
-
-export default Signin;
