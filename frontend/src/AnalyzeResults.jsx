@@ -1,10 +1,8 @@
-import SpotlightCard from "./SpotlightCard"; // Reuse your card component
 import { useNavigate } from "react-router-dom";
 
 export default function AnalyzeResults() {
   const navigate = useNavigate();
 
-  // Example: replace these with actual scraped data later
   const scrapedResults = [
     { site: "Amazon", price: "₹1,299", link: "https://www.amazon.in/" },
     { site: "Flipkart", price: "₹1,249", link: "https://www.flipkart.com/" },
@@ -12,34 +10,34 @@ export default function AnalyzeResults() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#FBF8EF] py-12 px-6">
-      <h1 className="text-4xl font-bold mb-10 text-center text-[#80CBC4]">
+    <div className="min-h-screen bg-white py-12 px-6">
+      <h1 className="text-4xl font-bold mb-10 text-center text-[#17153B]">
         Analysis Results
       </h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-        {/* Your Product Details */}
-        <SpotlightCard spotlightColor="rgba(128, 203, 196, 0.3)">
-          <h2 className="text-2xl font-bold mb-3 text-[#FFB433]">Your Product</h2>
-          <p className="text-gray-700 mb-2">Name: Samsung Galaxy M14 5G</p>
-          <p className="text-gray-700 mb-2">Features: 6GB RAM, 128GB Storage, 6000mAh Battery</p>
-          <p className="text-gray-700">Description: Great battery backup and performance for the price.</p>
-        </SpotlightCard>
+        {/* Product Details */}
+        <div className="bg-white border border-[#C8ACD6] p-8 rounded-xl shadow-md hover:shadow-lg transition duration-300">
+          <h2 className="text-2xl font-bold mb-3 text-[#17153B]">Your Product</h2>
+          <p className="text-[#2E236C] mb-2">Name: Samsung Galaxy M14 5G</p>
+          <p className="text-[#2E236C] mb-2">Features: 6GB RAM, 128GB Storage, 6000mAh Battery</p>
+          <p className="text-[#2E236C]">Description: Great battery backup and performance for the price.</p>
+        </div>
 
-        {/* Scraped Results */}
-        <SpotlightCard spotlightColor="rgba(180, 235, 230, 0.3)">
-          <h2 className="text-2xl font-bold mb-3 text-[#FFB433]">Price Comparison</h2>
+        {/* Price Comparison */}
+        <div className="bg-white border border-[#C8ACD6] p-8 rounded-xl shadow-md hover:shadow-lg transition duration-300">
+          <h2 className="text-2xl font-bold mb-3 text-[#17153B]">Price Comparison</h2>
           <ul className="space-y-3">
             {scrapedResults.map(({ site, price, link }) => (
               <li key={site} className="flex justify-between items-center">
-                <span className="text-gray-700">{site}</span>
+                <span className="text-[#2E236C]">{site}</span>
                 <div className="flex gap-4 items-center">
-                  <span className="font-bold">{price}</span>
+                  <span className="font-bold text-[#433D8B]">{price}</span>
                   <a
                     href={link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#80CBC4] underline hover:text-[#4DB6AC]"
+                    className="text-[#C8ACD6] underline hover:text-[#A990C5]"
                   >
                     View
                   </a>
@@ -47,13 +45,13 @@ export default function AnalyzeResults() {
               </li>
             ))}
           </ul>
-        </SpotlightCard>
+        </div>
       </div>
 
       <div className="text-center mt-10">
         <button
-          onClick={() => navigate("/dashboard")}
-          className="bg-[#FFB433] text-black px-6 py-3 rounded-full text-lg font-semibold hover:bg-yellow-400 transition duration-300"
+          onClick={() => navigate("/welcome")}
+          className="bg-[#17153B] text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-[#2E236C] transition duration-300"
         >
           Back to Dashboard
         </button>

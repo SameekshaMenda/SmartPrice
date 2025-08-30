@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Signin from "./Signin";
 import Signup from "./Signup";
 import Welcome from "./Welcome";
-import Dashboard from "./Dashboard";
+// import Dashboard from "./Dashboard";
 import PriceHistory from "./PriceHistory";
 import Analyze from "./Analyze";
 import AnalyzeImage from "./AnalyzeImage";
@@ -19,7 +19,7 @@ export default function App() {
         <Route path="/" element={<Signin />} /> {/* Start from Signin */}
         <Route path="/signup" element={<Signup />} />
         <Route path="/welcome" element={<Welcome />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        {/* <Route path="/dashboard" element={<Dashboard />} /> */}
         <Route path="/history" element={<PriceHistory />} />
         <Route path="/statistics" element={<Statistics />} />
         <Route path="/analyze" element={<Analyze />} />
