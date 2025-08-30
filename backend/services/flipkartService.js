@@ -1,6 +1,9 @@
-// backend/services/flipkartService.js (Complete, More Robust Version)
+// backend/services/flipkartService.js (Complete, Final Upgraded Version)
 
-const puppeteer = require('puppeteer');
+// --- KEY CHANGE: Use puppeteer-extra and the stealth plugin ---
+const puppeteer = require('puppeteer-extra');
+const StealthPlugin = require('puppeteer-extra-plugin-stealth');
+puppeteer.use(StealthPlugin());
 
 async function getFlipkartProducts(query) {
   const url = `https://www.flipkart.com/search?q=${encodeURIComponent(query)}`;
@@ -8,7 +11,7 @@ async function getFlipkartProducts(query) {
 
   try {
     browser = await puppeteer.launch({
-      headless: true,
+      headless: true, // It's better to run headless for performance once it's working
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
 
@@ -19,19 +22,20 @@ async function getFlipkartProducts(query) {
 
     await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
 
-    // This is a more reliable selector for the container of all search results
-    await page.waitForSelector('div._1AtVbE', { timeout: 20000 });
+    // --- KEY CHANGE: Updated, more reliable selector for the results container ---
+    // This waits for the main container that holds all the product cards.
+    await page.waitForSelector('div._1YokD2._3Mn1Gg', { timeout: 20000 });
 
     const products = await page.evaluate(() => {
-      // Flipkart uses many different class names. We check for multiple possibilities.
-      const items = document.querySelectorAll('div._1xHGtK._373qXS, div._4ddWXP, div._2kHMtA');
+      // --- KEY CHANGE: These are the latest selectors for Flipkart's search page ---
+      const items = document.querySelectorAll('div._1AtVbE div._13oc-S > div');
       const results = [];
 
       items.forEach(card => {
-        const title = card.querySelector('a.s1Q9rs, ._4rR01T')?.innerText;
-        const price = card.querySelector('div._30jeq3')?.innerText;
+        const title = card.querySelector('div._4rR01T')?.innerText;
+        const price = card.querySelector('div._30jeq3._1_WHN1')?.innerText;
         const image = card.querySelector('img._396cs4')?.src;
-        const relativeUrl = card.querySelector('a.s1Q9rs, a._1fQZEK')?.getAttribute('href');
+        const relativeUrl = card.querySelector('a._1fQZEK')?.getAttribute('href');
 
         if (title && price && image && relativeUrl) {
           results.push({

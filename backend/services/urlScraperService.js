@@ -5,7 +5,7 @@ const puppeteer = require('puppeteer');
 const { getAmazonService } = require('./amazonService');
 const { getFlipkartProducts } = require('./flipkartService');
 const { getSnapdealService } = require('./snapdealService'); // Let's add Snapdeal back in!
-
+const {getMyntraProducts} = require('./myntraService');
 async function launchBrowser() {
   return await puppeteer.launch({
     headless: true,
@@ -54,14 +54,15 @@ async function searchByUrl(productTitle) {
 
   // --- KEY FIX ---
   // We call all three services and correctly name the variables.
-  const [flipkartResults, amazonResults, snapdealResults] = await Promise.all([
+  const [flipkartResults, amazonResults, snapdealResults, myntraResults] = await Promise.all([
     getFlipkartProducts(productTitle),
     getAmazonService(productTitle),
     getSnapdealService(productTitle),
+    getMyntraProducts(productTitle),
   ]);
 
   // Combine the results from all platforms into one array
-  return [...flipkartResults, ...amazonResults, ...snapdealResults];
+  return [...flipkartResults, ...amazonResults, ...snapdealResults, ...myntraResults];
 }
 
 module.exports = { searchByUrl, scrapeInitialProductDetails };
