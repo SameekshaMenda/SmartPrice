@@ -20,7 +20,7 @@ async function getAmazonService(query) {
 
     return products.map(product => ({
       title: product.product_title || 'No title',
-      image: product.product_image || 'No image',
+      image: product.product_image || '',
       platform: 'Amazon',
       price: product.product_price || 'No price',
       url: product.product_url || 'No URL'
