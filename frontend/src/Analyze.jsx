@@ -24,7 +24,7 @@ export default function Analyze() {
           </button>
 
           <button
-            onClick={() => navigate("/analyze/analyzetext")}
+            onClick={() => navigate("/productsearch")}
             className="bg-[#17153B] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#2E236C] transition"
           >
             Enter Text
