@@ -57,7 +57,7 @@ export default function ProductSearch() {
         </p>
 
         {/* Text Search Section */}
-        <div className="mb-8">
+        {/* <div className="mb-8">
             <input
               type="text"
               className="w-full p-4 border border-[#C8ACD6] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#433D8B] text-[#17153B]"
@@ -74,7 +74,7 @@ export default function ProductSearch() {
                     {loading ? 'Searching...' : 'Search by Name'}
                 </button>
             </div>
-        </div>
+        </div> */}
 
         <div className="text-center my-4 text-gray-500 font-bold">OR</div>
 
@@ -89,9 +89,9 @@ export default function ProductSearch() {
             />
             <div className="flex justify-center">
                 <button
-                    onClick={handleUrlSearch}
+                    onClick={handleTextSearch}
                     disabled={loading}
-                    className="mt-4 bg-green-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-green-700 transition duration-300 disabled:bg-gray-400"
+                    className="mt-4 bg-[#433D8B] text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-[#2E236C] transition duration-300 disabled:bg-gray-400"
                 >
                     {loading ? 'Analyzing...' : 'Search by URL'}
                 </button>

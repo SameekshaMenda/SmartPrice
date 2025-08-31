@@ -8,6 +8,7 @@ const dotenv = require('dotenv');
 const searchRoutes = require('./routes/search');
 const imageSearchRoutes = require('./routes/imageSearch');
 const urlSearchRoutes = require('./routes/urlSearch'); // <-- Import the new route
+const historyRoutes = require('./routes/history');
 
 dotenv.config();
 const app = express();
@@ -20,6 +21,7 @@ app.use(express.json()); // This is crucial for parsing req.body
 app.use('/search', searchRoutes);
 app.use('/image', imageSearchRoutes);
 app.use('/url-search', urlSearchRoutes); // <-- Use the new route
+app.use('/history', historyRoutes);
 
 // Define the port
 const PORT = process.env.PORT || 5000;

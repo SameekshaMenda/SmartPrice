@@ -1,20 +1,22 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // Pages
-import Signin from "./Signin";
-import Signup from "./Signup";
-import Welcome from "./Welcome";
+import Signin from "./components/Signin";
+import Signup from "./components/Signup";
+import Welcome from "./components/Welcome";
 // import Dashboard from "./Dashboard";
-import PriceHistory from "./PriceHistory";
-import Analyze from "./Analyze";
-import AnalyzeImage from "./AnalyzeImage";
-import AnalyzeText from "./AnalyzeText";
-import AnalyzeResults from "./AnalyzeResults";
-import Statistics from "./Statistics";
-import ProductSearch from "./ProductSearch";
+import PriceHistory from "./components/PriceHistory";
+import Analyze from "./components/Analyze";
+import AnalyzeImage from "./components/AnalyzeImage";
+import AnalyzeText from "./components/AnalyzeText";
+import AnalyzeResults from "./components/AnalyzeResults";
+import Statistics from "./components/Statistics";
+import ProductSearch from "./components/ProductSearch";
+import { AuthProvider } from './context/AuthContext';
 
 export default function App() {
   return (
+    <AuthProvider>
     <Router>
       <Routes>
         <Route path="/" element={<Signin />} /> {/* Start from Signin */}
@@ -30,5 +32,6 @@ export default function App() {
         <Route path="/analyzeresults" element={<AnalyzeResults />} />
       </Routes>
     </Router>
+    </AuthProvider>
   );
 }

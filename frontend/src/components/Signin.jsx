@@ -1,12 +1,25 @@
-import { Link, useNavigate } from "react-router-dom";
+// frontend/src/components/Signin.js
+
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
 
 export default function Signin() {
   const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Add authentication logic
-    navigate("/welcome");
+    setError('');
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate('/welcome');
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (
