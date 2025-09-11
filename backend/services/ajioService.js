@@ -2,8 +2,8 @@ const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 puppeteer.use(StealthPlugin());
 
-async function getMyntraProducts(query) {
-  const url = `https://www.myntra.com/${encodeURIComponent(query.replace(/\s+/g, '-'))}`;
+async function getAjioProducts(query) {
+  const url = `https://www.ajio.com/search/?text=${encodeURIComponent(query)}`;
   let browser;
   try {
     browser = await puppeteer.launch({ 
@@ -13,11 +13,10 @@ async function getMyntraProducts(query) {
     const page = await browser.newPage();
     
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
-    await page.setViewport({ width: 1366, height: 768 });
     
     await page.setRequestInterception(true);
     page.on('request', (req) => {
-      if (['image', 'stylesheet', 'font', 'media'].includes(req.resourceType())) {
+      if (['image', 'stylesheet', 'font'].includes(req.resourceType())) {
         req.abort();
       } else {
         req.continue();
@@ -26,26 +25,14 @@ async function getMyntraProducts(query) {
 
     await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 15000 });
     
-    // Multiple selector options
     const products = await page.evaluate(() => {
       const results = [];
-      const selectors = [
-        '.product-base',
-        '.product-container',
-        '.product-tuple',
-        'li.product-base'
-      ];
+      const items = document.querySelectorAll('.item, .product, .prod-list');
       
-      let items = [];
-      selectors.forEach(selector => {
-        const found = document.querySelectorAll(selector);
-        if (found.length > 0) items = Array.from(found);
-      });
-      
-      items.slice(0, 8).forEach(item => {
+      items.forEach(item => {
         try {
-          const titleElem = item.querySelector('.product-product, .product-brand, [data-productname]');
-          const priceElem = item.querySelector('.product-price, .product-discountedPrice, [data-price]');
+          const titleElem = item.querySelector('.name, .prod-name, [data-productname]');
+          const priceElem = item.querySelector('.price, .prod-price, [data-price]');
           const imageElem = item.querySelector('img');
           const linkElem = item.querySelector('a');
           
@@ -54,7 +41,7 @@ async function getMyntraProducts(query) {
               title: titleElem.innerText.trim(),
               price: priceElem.innerText.trim(),
               image: imageElem ? imageElem.src : '',
-              platform: 'Myntra',
+              platform: 'Ajio',
               url: linkElem ? linkElem.href : ''
             });
           }
@@ -63,14 +50,14 @@ async function getMyntraProducts(query) {
       return results;
     });
 
-    console.log(`✅ Scraped Myntra Products: ${products.length} items found.`);
-    return products;
+    console.log(`✅ Scraped Ajio Products: ${products.length} items found.`);
+    return products.slice(0, 8);
   } catch (error) {
-    console.error('🚨 Myntra scraping failed:', error.message);
+    console.error('🚨 Ajio scraping failed:', error.message);
     return [];
   } finally {
     if (browser) await browser.close();
   }
 }
 
-module.exports = { getMyntraProducts };
+module.exports = { getAjioProducts };
